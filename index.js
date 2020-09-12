@@ -1,61 +1,41 @@
-/* IL FAUT :
-1- récupérer l'API ------ OK
-2- mettre les trucs qui sont dans l'API dans le DOM ! ---- OK
-3- comprendre le JS ---- J'avance
-*/
+const god = document.getElementById('main'); //récupération id=main
 
-/* Je dois
-1- re-créer dynamiquement <div col-12.... | <div card | <h2 <img <p prix
-1B - besoin d'un boucle qui va créer autant d'élément que j'ai d'articles
-
-2- créer les variables de chaque élément de l'API
-3- récupérer mes données de l'API et les injecter dans chaque élément créé
-4- au survol de la souris sur card, afficher lien 'pour plus de détails'
-4- prier pour que ça fonctionne
-
-*/
-
-
-let myApi = fetch('http://localhost:3000/api/cameras/5be1ed3f1c9d44000030b061');
-
-const nameProd = document.querySelector('h2');
-const imgProd = document.getElementById('imagetest');
-// la description ira dans la page détail de l'article
-const placeProduit = document.getElementById('description');
-const priceProduit = document.getElementById('prix');
-
-
-
-//fonction créant mon HTML dynamiquement
-function newGod() {
-
-}
-
-
-
-myApi.then(function(response) {
-        const reponseApi = response.json();
-        return reponseApi;
-
+fetch('http://localhost:3000/api/cameras')
+    .then(response => {
+        if (response.ok) {
+            return response.json()
+        } else {
+            Promise.reject(response.status);
+        }
     })
-    .then(function(reponseApi) {
-        nameProd.textContent = reponseApi.name;
-        imgProd.src = reponseApi.imageUrl;
-        placeProduit.textContent += 'Description produit : ' + reponseApi.description;
-        priceProduit.textContent += 'Prix : ' + reponseApi.price / 100 + ',00 €';
+    .then(data => {
+        for (const objet of data) { //je crée une boucle qui parcours le json
 
-        console.log(reponseApi);
-    });
+            let priceProd = objet.price / 100; //variable prix pour le diviser par 100
+
+            god.innerHTML += `
+                <div class="card card-body col-12 col-md-6 col-lg-4">
+                    <img alt="${objet.name}" class="img-fluid" src="${objet.imageUrl}">
+                    <h2>${objet.name}</h2>
+                    <p>${priceProd}.00 €</p>
+                    <a href="produit.html?id${objet._id}" class="btn-outline-info text-center">Pour plus de détails</a>
+                </div>
+                `; //j'injecte mon HTML avec les bonnes variables directement dedans
+            console.log(objet);
+        };
+
+    }).catch(e);
+console.log(e);
+
+
+const params = new URLSearchParams(location.search);
 
 
 
-// let descriptionProduit;
-// let imageProduit;
-// let prixProduit;
-// let optionProduit;
+/* <p>${objet.description}</p> 
 
 
-/* comment enregistrer un tableau d’objets dans le localStorage ???
+comment enregistrer un tableau d’objets dans le localStorage ???
 
 L'info est donnée dans le backend enfin une partie. 
 Dans le fichier controllers, moi j'ai pris les ours, 
