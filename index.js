@@ -1,5 +1,7 @@
 const god = document.getElementById('main'); //récupération id=main
 
+
+
 fetch('http://localhost:3000/api/cameras')
     .then(response => {
         if (response.ok) {
@@ -11,10 +13,10 @@ fetch('http://localhost:3000/api/cameras')
     .then(data => {
         for (const objet of data) { //je crée une boucle qui parcours le json
 
-            let priceProd = objet.price / 100; //variable prix pour le diviser par 100
+            const priceProd = objet.price / 100; //variable prix pour le diviser par 100
 
             god.innerHTML += `
-                <div class="card card-body col-12 col-md-6 col-lg-4">
+                <div class="card card-body col-12 col-md-6 col-lg-4 mx-auto m-2">
                     <img alt="${objet.name}" class="img-fluid" src="${objet.imageUrl}">
                     <h2>${objet.name}</h2>
                     <p>${priceProd}.00 €</p>
@@ -28,14 +30,9 @@ fetch('http://localhost:3000/api/cameras')
 console.log(e);
 
 
-const params = new URLSearchParams(location.search);
 
 
-
-/* <p>${objet.description}</p> 
-
-
-comment enregistrer un tableau d’objets dans le localStorage ???
+/* comment enregistrer un tableau d’objets dans le localStorage ???
 
 L'info est donnée dans le backend enfin une partie. 
 Dans le fichier controllers, moi j'ai pris les ours, 
