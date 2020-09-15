@@ -2,7 +2,7 @@ const beerus = document.getElementById('main');
 
 const params = new URLSearchParams(location.search);
 
-fetch('http://localhost:3000/api/cameras/') //injecter l'id du produit clické, mais comment ???
+fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //injecter l'id du produit clické, mais comment ???
     .then(response => {
         if (response.ok) {
             return response.json()

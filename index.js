@@ -1,7 +1,6 @@
 const god = document.getElementById('main'); //récupération id=main
 
 
-
 fetch('http://localhost:3000/api/cameras')
     .then(response => {
         if (response.ok) {
@@ -22,7 +21,7 @@ fetch('http://localhost:3000/api/cameras')
                     <p>${priceProd}.00 €</p>
                     <a href="produit.html?id${objet._id}" class="btn-outline-info text-center">Pour plus de détails</a>
                 </div>
-                `; //j'injecte mon HTML avec les bonnes variables directement dedans
+                `; //j'injecte mon HTML avec les bonnes variables directement dans le DOM
             console.log(objet);
         };
 
