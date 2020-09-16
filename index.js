@@ -10,7 +10,7 @@ fetch('http://localhost:3000/api/cameras')
         }
     })
     .then(data => {
-        for (const objet of data) { //je crée une boucle qui parcours le json
+        data.forEach(objet => {
 
             let priceProd = objet.price / 100; //variable prix pour le diviser par 100
 
@@ -23,10 +23,27 @@ fetch('http://localhost:3000/api/cameras')
                 </div>
                 `; //j'injecte mon HTML avec les bonnes variables directement dans le DOM
             console.log(objet);
-        };
-
+        })
     }).catch(error);
 console.log(error);
+
+
+// for (const objet of data) { //je crée une boucle qui parcours le json
+
+//     let priceProd = objet.price / 100; //variable prix pour le diviser par 100
+
+//     god.innerHTML += `
+//         <div class="card card-body col-12 col-md-6 col-lg-4 mx-auto m-2">
+//             <img alt="${objet.name}" class="img-fluid" src="${objet.imageUrl}">
+//             <h2>${objet.name}</h2>
+//             <p>${priceProd}.00 €</p>
+//             <a href="produit.html?id=${objet._id}" class="btn-outline-info text-center">Pour plus de détails</a>
+//         </div>
+//         `; //j'injecte mon HTML avec les bonnes variables directement dans le DOM
+//     console.log(objet);
+// };
+
+
 
 
 
