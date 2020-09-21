@@ -23,8 +23,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
 
         })
 
-        // let totalPrice = priceProd + quantité;
-
+        //Ecriture du HTML en dynamique
         beerus.innerHTML += `
                 <div class="card card-body col-12 col-lg-6">
                     <img alt="${data.name}" class="img-fluid" src="${data.imageUrl}">
@@ -34,7 +33,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                     <h2>${data.name}</h2>
                     <p>${data.description}</p>
                     <label for="QuantiteProduit">Quantité:</label>
-                    <input id ="inputQuantite" type="number"/>
+                    <input id ="inputQuantite" type="number" min="1" value="1"/>
                         <div class="col-auto my-1 pb-5">
                             <label class="mr-sm-2" for="inlineFormCustomSelect">Lentilles</label>
                             <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
@@ -42,54 +41,34 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                                 ${lens}
                             </select>        
                         </div>
-                    <p><strong>Prix total</strong> : <span id="totalPrice"></span>.00 €</p>
+                    <p><strong>Prix total</strong> : <span id="totalPrice">${priceProd.toFixed(2)}</span> €</p>
                     <button id="btnAjout" type="button" class="btn btn-success">Ajouter au panier</button>
                 
                     
                 </div>
                 `;
 
-        // écoute de l'event input. La valeur doit être égale à priceProd et s'ajouter à totalPrice ou se soutraire.
 
-        let quantites = document.getElementById('inputQuantite');
-        quantites.addEventListener('change', (event) => {
-            const result = document.getElementById('totalPrice');
-            result.textContent = `${priceProd}` + `${event.target.value}`
-        })
+        //variable qui récupère la fonction d'écoute pour le prix total
+        let quantitePrice = priceFunction(priceProd);
 
-        console.log(quantites);
-
-
-
-        // const selectElement = document.querySelector('#gender');
-
-        // selectElement.addEventListener('change', (event) => {
-        //   const result = document.querySelector('#res-gender');
-        //   result.textContent = `${event.target.value}`;
-        // });
-
-
-
-
-
-        //j'injecte mon HTML avec les bonnes variables directement dans le DOM
-
-        /*ajouter un dropdown pour les lentilles, 
-        ajouter option augmenter la quantité
-        ajouter bouton ajouter au panier */
-        console.log(data);
+        console.log(quantitePrice);
 
     });
 
+// écoute de l'input quantité afin de multiplié le prix par la quantité saisi.
+function priceFunction(priceProd) {
+    let quantites = document.getElementById('inputQuantite');
+    quantites.addEventListener('change', (event) => {
+        const result = document.getElementById('totalPrice');
+        result.textContent = `${priceProd}` * `${event.target.value}`;
+    });
+};
 
+//fonction pour récupérer quantité et prix et stocker dans localStorage
+function stockagepanier() {
+    let btnPanier = document.getElementById('btnAjout');
+    btnPanier.addEventListener('click', () => {
 
-
-
-function newFunction(priceProd, quantites) {
-    let totalPrice = priceProd + quantites;
-
-    console.log(totalPrice);
-    return totalPrice;
+    })
 }
-/*j'ai besoin de calculer l'ajout d'une quantité supplémentaire 
-et de relier le bouton d'ajout au panier */
