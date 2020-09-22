@@ -52,6 +52,27 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
         //variable qui récupère la fonction d'écoute pour le prix total
         let quantitePrice = priceFunction(priceProd);
 
+        const btnAjout = document.getElementById('btnAjoutId');
+
+        for (let i = 0; btnAjout.length; i++) {
+            btnAjout[i].addEventListener('click', () => {
+                ajoutPanier()
+            })
+        }
+
+        function ajoutPanier() {
+            let productNumber = localStorage.getItem('ajoutPanier')
+
+            if (productNumber) {
+                localStorage.setItem('ajoutPanier', productNumber + 1);
+
+            } else {
+                localStorage.setItem('ajoutPanier', 1);
+            }
+
+        }
+
+
     });
 
 // écoute de l'input quantité afin de multiplié le prix par la quantité saisi.
@@ -63,24 +84,24 @@ function priceFunction(priceProd) {
     });
 };
 
-const newLocal = document.getElementById('btnAjoutId');
 
-let btnAjout = newLocal;
 
-for (let i = 0; btnAjout.length; i++) {
-    btnAjout[i].addEventListener('click', () => {
-        ajoutPanier()
-    })
+/* je pense que ton bouton est null car tu est en dehors du scope de la declaration 
+de ton bouton donc il ne le trouve pas, laissa ta fonction stockage panier ou elle est 
+mais met la const btnpanier et l'event dans la requete fetch en dessous console.log(quantitePrice);
+
+et dans ton event listener tu appelera ta fonction stockagepanier au click
+
+ça donnerai ça : let btnPanier = document.getElementById('btnAjout');
+  btnPanier.addEventListener('click', function() {  
+    stockagePanier();
+  });
+
+et dans ta fonction essaye ça :  function stockagepanier(newProduct) {
+    localStorage.setItem('keyPanier', JSON.stringify(newProduct));
 }
 
-function ajoutPanier() {
-    let productNumber = localStorage.getItem('ajoutPanier')
+et dans ton eventlistener a stockagepanier entre les paranthese tu met data, 
+ça récupere ton article
 
-    if (productNumber) {
-        localStorage.setItem('ajoutPanier', productNumber + 1);
-
-    } else {
-        localStorage.setItem('ajoutPanier', 1);
-    }
-
-}
+*/
