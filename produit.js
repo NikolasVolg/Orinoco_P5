@@ -14,14 +14,15 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
     })
     .then(data => {
         //suppression de la boucle
-        let priceProd = data.price / 100; //variable prix pour le diviser par 100
+        //variable prix pour le diviser par 100
+        let priceProd = data.price / 100;
 
+        //variable vide + boucle pour créer le select qui accueil lenses
         let lens = "";
 
         data.lenses.forEach(lentille => {
             lens += `<option value="${lentille}">${lentille}</option>`;
-
-        })
+        });
 
         //Ecriture du HTML en dynamique
         beerus.innerHTML += `
@@ -36,10 +37,9 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                         <label for="QuantiteProduit">Quantité:</label>
                         <input id ="inputQuantite" type="number" min="1" value="1"/>
                             <div class="col-auto my-1 pb-5 mt-4">
-                                <label class="mr-sm-2" for="inlineFormCustomSelect">Lentilles</label>
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Objectifs</label>
                                 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                                    <option selected>Choose...</option>
-                                    ${lens}
+                                    ${lens}   
                                 </select>        
                             </div>
                         <p><strong>Prix total</strong> : <span id="totalPrice">${priceProd.toFixed(2)}</span> €</p>
@@ -54,28 +54,25 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
 
         const btnAjout = document.getElementById('btnAjoutId');
 
-        for (let i = 0; btnAjout.length; i++) {
-            btnAjout[i].addEventListener('click', () => {
-                ajoutPanier()
-            })
-        }
+        btnAjout.addEventListener('click', function() { ajoutPanier() });
 
+
+        //la fonction qui normalement me place mes trucs en storage mais ça met toutes les lentilles
+        //mais pas la quantité ni le prix...
         function ajoutPanier() {
             let productNumber = localStorage.getItem('ajoutPanier')
 
             if (productNumber) {
-                localStorage.setItem('ajoutPanier', productNumber + 1);
+                localStorage.setItem('ajoutPanier', JSON.stringify(data));
 
             } else {
-                localStorage.setItem('ajoutPanier', 1);
+                localStorage.setItem('ajoutPanier', JSON.stringify(data));
             }
-
         }
-
 
     });
 
-// écoute de l'input quantité afin de multiplié le prix par la quantité saisi.
+// fonction d'écoute de l'input quantité afin de multiplié le prix par la quantité saisi.
 function priceFunction(priceProd) {
     let quantites = document.getElementById('inputQuantite');
     quantites.addEventListener('change', (event) => {
@@ -86,22 +83,19 @@ function priceFunction(priceProd) {
 
 
 
-/* je pense que ton bouton est null car tu est en dehors du scope de la declaration 
-de ton bouton donc il ne le trouve pas, laissa ta fonction stockage panier ou elle est 
-mais met la const btnpanier et l'event dans la requete fetch en dessous console.log(quantitePrice);
+/* let queFaireMaintenant = recupérer la quantité(1 par défaut) demandé + prix total + lenses + caractéristiquesProduit;
+if (lenses) {
+    pas d objectif sélectionné au click btn
+    return alert(Veuillez sélectionnez un objectif);
+} else enregistrer dans localStorage; */
 
-et dans ton event listener tu appelera ta fonction stockagepanier au click
 
-ça donnerai ça : let btnPanier = document.getElementById('btnAjout');
-  btnPanier.addEventListener('click', function() {  
-    stockagePanier();
-  });
 
-et dans ta fonction essaye ça :  function stockagepanier(newProduct) {
-    localStorage.setItem('keyPanier', JSON.stringify(newProduct));
-}
 
-et dans ton eventlistener a stockagepanier entre les paranthese tu met data, 
-ça récupere ton article
+/* maintenant a toi de voir comment tu veux faire, moi par exemple j'ai créé un 
+objet qui stocke les données que je voulais et j'ai rajouté une donné quantity: 1 
+comme ça apres avec des conditions je gére si cet article n'est pas dans le localstorage 
+alors tu l'ajoute ou alors si il existe et quil a le meme id et le meme vernis alors tu l'incremente de 1,  
+c'est un exemple pour te donner une piste à explorer
 
 */
