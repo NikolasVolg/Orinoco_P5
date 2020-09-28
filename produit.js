@@ -15,7 +15,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
     .then(data => {
         //suppression de la boucle
         //variable prix pour le diviser par 100
-        let priceProd = data.price / 100;
+        let priceProdUnit = data.price / 100;
 
         //variable vide + boucle pour créer le select qui accueil lenses
         let lens = "";
@@ -42,60 +42,79 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                                     ${lens}   
                                 </select>        
                             </div>
-                        <p><strong>Prix total</strong> : <span id="totalPrice">${priceProd.toFixed(2)}</span> €</p>
+                        <p><strong>Prix total</strong> : <span id="totalPrice">${priceProdUnit.toFixed(2)}</span> €</p>
                         <button id="btnAjoutId" type="button" class="btn btn-success">Ajouter au panier</button>
                     </form>   
                 </div>
                 `;
 
 
-        //variable qui récupère la fonction d'écoute pour le prix total
-        let quantitePrice = priceFunction(priceProd);
+        //variables qui récupère les fonctions d'écoute pour le prix total
+        let functionPrice = priceFunction(priceProdUnit);
 
+
+
+        //On écoute le petit bouton, mais tu ne sais pas cliquer !
         const btnAjout = document.getElementById('btnAjoutId');
 
         btnAjout.addEventListener('click', function() { ajoutPanier() });
 
 
-        //la fonction qui normalement me place mes trucs en storage mais ça met toutes les lentilles
-        //mais pas la quantité ni le prix...
+        //--Fonction qui place les valeurs produits en storage
         function ajoutPanier() {
-            let productNumber = localStorage.getItem('ajoutPanier')
 
-            if (productNumber) {
-                localStorage.setItem('ajoutPanier', JSON.stringify(data));
+            let lensElm = document.getElementById('inlineFormCustomSelect');
+            let quantityElm = document.getElementById('inputQuantite');
 
-            } else {
-                localStorage.setItem('ajoutPanier', JSON.stringify(data));
-            }
-        }
+            let toAddTab = {
+                idProd: data._id,
+                image: data.imageUrl,
+                name: data.name,
+                lens: lensElm.value,
+                quantite: quantityElm.value,
+                price: (data.price * parseInt(quantityElm.value)) / 100
+            };
+
+            //le moment ou on tente un truc
+
+            //on check si ls contient un truc sino il le crée avec la fonction suivante
+            function ajoutLs() {
+                let locStor;
+
+                if (localStorage.getItem('panier').lenght) {
+                    locStor = JSON.parse(localStorage.getItem('panier'));
+                } else {
+                    locStor = {};
+                }
+
+                return locStor;
+            };
+
+            function savePanier(panier) {
+                localStorage.setItem('panier', JSON.stringify(toAddTab))
+            };
+
+            // et là on voit si le client à rentrer le même produit avec comparaison id et lens, si oui on ajout un 1
+            //sinon on ajoute le produit 
+            function addtoLocStor(idProd, lens, quantite) {
+                let panier = addtoLocStor;
+
+                if (panier[idProd + lens]) {
+                    panier[idProd + lens].quantite += quantityElm;
+                } else {
+                    panier[idProd + lens] = idProd;
+                };
+            };
+        };
 
     });
 
-// fonction d'écoute de l'input quantité afin de multiplié le prix par la quantité saisi.
-function priceFunction(priceProd) {
+
+//--Fonction qui calcule le prix total sur la page Produit
+function priceFunction(priceProdUnit) {
     let quantites = document.getElementById('inputQuantite');
     quantites.addEventListener('change', (event) => {
         const result = document.getElementById('totalPrice');
-        result.textContent = `${priceProd}` * `${event.target.value}`;
+        result.textContent = `${priceProdUnit}` * `${event.target.value}`;
     });
 };
-
-
-
-/* let queFaireMaintenant = recupérer la quantité(1 par défaut) demandé + prix total + lenses + caractéristiquesProduit;
-if (lenses) {
-    pas d objectif sélectionné au click btn
-    return alert(Veuillez sélectionnez un objectif);
-} else enregistrer dans localStorage; */
-
-
-
-
-/* maintenant a toi de voir comment tu veux faire, moi par exemple j'ai créé un 
-objet qui stocke les données que je voulais et j'ai rajouté une donné quantity: 1 
-comme ça apres avec des conditions je gére si cet article n'est pas dans le localstorage 
-alors tu l'ajoute ou alors si il existe et quil a le meme id et le meme vernis alors tu l'incremente de 1,  
-c'est un exemple pour te donner une piste à explorer
-
-*/
