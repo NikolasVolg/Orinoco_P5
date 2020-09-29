@@ -13,18 +13,18 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
         }
     })
     .then(data => {
-        //suppression de la boucle
-        //variable prix pour le diviser par 100
+        //--suppression de la boucle
+        //--variable prix pour le diviser par 100
         let priceProdUnit = data.price / 100;
 
-        //variable vide + boucle pour créer le select qui accueil lenses
+        //--variable vide + boucle pour créer le select qui accueil lenses
         let lens = "";
 
         data.lenses.forEach(lentille => {
             lens += `<option value="${lentille}">${lentille}</option>`;
         });
 
-        //Ecriture du HTML en dynamique
+        //--Ecriture du HTML en dynamique
         beerus.innerHTML += `
                 <div class="card card-body col-12 col-lg-6">
                     <img alt="${data.name}" class="img-fluid" src="${data.imageUrl}">
@@ -49,19 +49,22 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                 `;
 
 
-        //variables qui récupère les fonctions d'écoute pour le prix total
+        //--variables qui récupère les fonctions d'écoute pour le prix total
         let functionPrice = priceFunction(priceProdUnit);
 
-
-
-        //On écoute le petit bouton, mais tu ne sais pas cliquer !
+        //--On écoute le petit bouton, mais tu ne sais pas cliquer !
         const btnAjout = document.getElementById('btnAjoutId');
 
-        btnAjout.addEventListener('click', function() { ajoutPanier() });
+        btnAjout.addEventListener('click', function() {
+            console.log("Je marche");
+            ajoutPanier()
+        });
 
 
-        //--Fonction qui place les valeurs produits en storage
+        //---on catch les données voulues et on stocke dans un tableau
         function ajoutPanier() {
+
+            console.log("moi aussi");
 
             let lensElm = document.getElementById('inlineFormCustomSelect');
             let quantityElm = document.getElementById('inputQuantite');
@@ -75,42 +78,44 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                 price: (data.price * parseInt(quantityElm.value)) / 100
             };
 
-            //le moment ou on tente un truc
+            //---le moment ou on tente un truc
 
-            //on check si ls contient un truc sino il le crée avec la fonction suivante
+            //---on check si ls contient un truc sino il le crée avec la fonction suivante
             function ajoutLs() {
                 let locStor;
-
-                if (localStorage.getItem('panier').lenght) {
+                if (localStorage.getItem('panier')) {
                     locStor = JSON.parse(localStorage.getItem('panier'));
                 } else {
                     locStor = {};
                 }
-
                 return locStor;
             };
 
-            function savePanier(panier) {
-                localStorage.setItem('panier', JSON.stringify(toAddTab))
-            };
-
-            // et là on voit si le client à rentrer le même produit avec comparaison id et lens, si oui on ajout un 1
-            //sinon on ajoute le produit 
+            //---là on voit si le client à rentrer le même produit avec comparaison id et lens, si oui on ajout un 1
+            //--sinon on ajoute le produit 
             function addtoLocStor(idProd, lens, quantite) {
-                let panier = addtoLocStor;
-
-                if (panier[idProd + lens]) {
-                    panier[idProd + lens].quantite += quantityElm;
+                let panier = JSON.parse(localStorage.getItem('panier'));
+                console.log(panier);
+                if (panier == null) {
+                    panier = idProd;
                 } else {
-                    panier[idProd + lens] = idProd;
+                    panier.quantite += quantityElm;
                 };
             };
-        };
 
+            //---fonction de sauvegarde dans le LS
+            function savePanier(panier) {
+                localStorage.setItem('panier', JSON.stringify(toAddTab));
+            };
+
+            ajoutLs();
+            addtoLocStor();
+            savePanier();
+        }
     });
 
 
-//--Fonction qui calcule le prix total sur la page Produit
+//---Fonction qui calcule le prix total sur la page Produit
 function priceFunction(priceProdUnit) {
     let quantites = document.getElementById('inputQuantite');
     quantites.addEventListener('change', (event) => {
