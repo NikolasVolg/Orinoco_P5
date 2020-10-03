@@ -29,7 +29,6 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                 <div class="card card-body col-12 col-lg-6">
                     <img alt="${data.name}" class="img-fluid" src="${data.imageUrl}">
                 </div>
-
                 <div class="card col-12 col-lg-4 pb-3">
                     <h2>${data.name}</h2>
                     <p>${data.description}</p>
@@ -78,40 +77,14 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                 price: (data.price * parseInt(quantityElm.value)) / 100
             };
 
-            //---le moment ou on tente un truc
+            let key = localStorage.length + 1;
 
-            //---on check si ls contient un truc sino il le crée avec la fonction suivante
-            function ajoutLs() {
-                let locStor;
-                if (localStorage.getItem('panier')) {
-                    locStor = JSON.parse(localStorage.getItem('panier'));
-                } else {
-                    locStor = {};
-                }
-                return locStor;
-            };
+            localStorage[key] = JSON.stringify(toAddTab);
 
-            //---là on voit si le client à rentrer le même produit avec comparaison id et lens, si oui on ajout un 1
-            //--sinon on ajoute le produit 
-            function addtoLocStor(idProd, lens, quantite) {
-                let panier = JSON.parse(localStorage.getItem('panier'));
-                console.log(panier);
-                if (panier == null) {
-                    panier = idProd;
-                } else {
-                    panier.quantite += quantityElm;
-                };
-            };
+            window.location.href = 'panier.html';
 
-            //---fonction de sauvegarde dans le LS
-            function savePanier(panier) {
-                localStorage.setItem('panier', JSON.stringify(toAddTab));
-            };
-
-            ajoutLs();
-            addtoLocStor();
-            savePanier();
         }
+
     });
 
 

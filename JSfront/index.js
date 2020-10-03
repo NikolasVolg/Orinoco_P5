@@ -23,6 +23,8 @@ fetch('http://localhost:3000/api/cameras')
                 </div>
                 `; //j'injecte mon HTML avec les bonnes variables directement dans le DOM
             console.log(objet);
+
         })
+
     }).catch(error);
 console.log(error);
