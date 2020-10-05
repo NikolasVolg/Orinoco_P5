@@ -1,8 +1,49 @@
-let plouf = localStorage.getItem(1);
-console.log(plouf);
+const inHtml = document.getElementById('main');
+
+for (let i = 1; i <= localStorage.length; i += 1) {
+    let elmPanier = localStorage.getItem(i);
+    let elmPanierJson = JSON.parse(elmPanier);
+
+    console.log(elmPanierJson);
 
 
-plouf.innerHTML = ``
+    inHtml.innerHTML += `
+    <div class="card card-body col-12 col-md-6 col-lg-4 mx-auto m-2">
+        <img alt="${i.name}" class="img-fluid" src="${i.imageUrl}">
+        <h2>${i.name}</h2>
+        <p>${price.toFixed(2)} €</p>
+    </div>
+    `;
+
+};
+
+
+
+
+/* Idee DRY créer un function test regExp () {
+
+    if
+    else if
+    esle
+} 
+
+const validPrenom = function(inputPrenom) {
+
+    let prenomRegExp = new RegExp (ici regex en variable comme toute les autres)
+
+
+    console.log(validPrenom);
+
+   et ici on place la fonction {
+       if 
+       else if
+       else
+   }
+
+};
+
+
+*/
 
 /*************VALIDATION FORMULAIRE******************/
 
@@ -44,7 +85,7 @@ form.addEventListener('submit', function(e) {
         validEmail(form.email)) {
         form.submit();
     } else {
-        alert("Tous les champs sont obligatoire et doivent être valide");
+        alert("Ola coquinou ! Tous les champs sont obligatoire et doivent être valide");
     }
 
 });
@@ -177,7 +218,7 @@ const validEmail = function(inputEmail) {
 
 
 
-/* comment enregistrer un tableau d’objets dans le localStorage ???
+/* comment enregistrer un tableau d’is dans le localStorage ???
 
 L'info est donnée dans le backend enfin une partie. 
 Dans le fichier controllers, moi j'ai pris les ours, 

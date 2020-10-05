@@ -1,4 +1,4 @@
-const beerus = document.getElementById('main');
+const inHtml = document.getElementById('main');
 
 const params = new URLSearchParams(window.location.search);
 
@@ -13,7 +13,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
         }
     })
     .then(data => {
-        //--suppression de la boucle
+
         //--variable prix pour le diviser par 100
         let priceProdUnit = data.price / 100;
 
@@ -25,7 +25,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
         });
 
         //--Ecriture du HTML en dynamique
-        beerus.innerHTML += `
+        inHtml.innerHTML += `
                 <div class="card card-body col-12 col-lg-6">
                     <img alt="${data.name}" class="img-fluid" src="${data.imageUrl}">
                 </div>
