@@ -49,24 +49,25 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
 
 
         //--variables qui récupère les fonctions d'écoute pour le prix total
-        let functionPrice = priceFunction(priceProdUnit);
+        let functionPrice = calculePrice(priceProdUnit);
 
         //--On écoute le petit bouton, mais tu ne sais pas cliquer !
         const btnAjout = document.getElementById('btnAjoutId');
 
         btnAjout.addEventListener('click', function() {
-            console.log("Je marche");
-            ajoutPanier()
+            ajoutLocalStor()
         });
 
 
-        //---on catch les données voulues et on stocke dans un tableau
-        function ajoutPanier() {
+        //---on catch les données voulues et on stocke dans un objet
+        function ajoutLocalStor() {
 
-            console.log("moi aussi");
 
             let lensElm = document.getElementById('inlineFormCustomSelect');
             let quantityElm = document.getElementById('inputQuantite');
+
+            let tabbLs = [];
+
 
             let toAddTab = {
                 idProd: data._id,
@@ -74,25 +75,36 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                 name: data.name,
                 lens: lensElm.value,
                 quantite: quantityElm.value,
-                price: (data.price * parseInt(quantityElm.value)) / 100
+                totalPrice: (data.price * parseInt(quantityElm.value)) / 100,
+                price: data.price / 100
             };
+
 
             let key = localStorage.length + 1;
 
             localStorage[key] = JSON.stringify(toAddTab);
 
             window.location.href = 'panier.html';
-
-        }
+        };
 
     });
 
 
 //---Fonction qui calcule le prix total sur la page Produit
-function priceFunction(priceProdUnit) {
+function calculePrice(priceProdUnit) {
     let quantites = document.getElementById('inputQuantite');
     quantites.addEventListener('change', (event) => {
         const result = document.getElementById('totalPrice');
         result.textContent = `${priceProdUnit}` * `${event.target.value}`;
     });
 };
+
+
+// if (localStorage.pushTabb) {
+//     const tab = JSON.parse(localStorage.pushTabb);
+//     tab.push(toAddTabb);
+//     localStorage.setItem('pushTabb', JSON.stringify(tab));
+// } else {
+//     tabbLs.push(toAddTabb);
+//     localStorage.setItem('pushTabb', JSON.stringify(tabbLs));
+// };

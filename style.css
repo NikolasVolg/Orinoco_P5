@@ -1,0 +1,24 @@
+.gif {
+    display: block;
+    margin: auto;
+    max-width: 60%;
+    max-height: 60%;
+}
+
+.form-group:nth-of-type(1) {
+    margin-top: 60px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    margin-top: 20px;
+}
+
+.panierLine {
+    background: lightblue;
+    padding: 10px 0 10px 0;
+}

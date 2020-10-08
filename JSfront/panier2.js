@@ -4,48 +4,52 @@ function renderBasket() {
 
     inHtml.innerHTML = "";
 
-    for (let i = 1; i <= localStorage.length; i += 1) {
-        let elmPanier = localStorage.getItem(i);
-        let elmPanierJson = JSON.parse(elmPanier);
 
-        console.log(elmPanierJson);
+    let elmPanier = JSON.parse(localStorage.plop);
+    elmPanier.forEach(produit => {
 
         inHtml.innerHTML += `
         <div class="row m-4 panierLine">
             <div class="col-lg-4">
-                <img alt="${elmPanierJson.name}" class="img-fluid" src="${elmPanierJson.image}">
+                <img alt="${produit.name}" class="img-fluid" src="${produit.image}">
             </div>
 
             <div class="col-lg-7">
-                <h2>${elmPanierJson.name}</h2>
+                <h2>${produit.name}</h2>
                 <label for="QuantiteProduit">Quantité:</label>
-                <input id="inputQuantite${i}" type="number" min="1" value="${elmPanierJson.quantite}"/>
-                <p>lentilles : ${elmPanierJson.lens}</p>
-                <p>${elmPanierJson.totalPrice.toFixed(2)} €</p>
-                <button id="supprim${i}" class="btn btn-warning">Supprimer</button>
+                <input id="inputQuantite${produit}" type="number" min="1" value="${produit.quantite}"/>
+                <p>lentilles : ${produit.lens}</p>
+                <p>${produit.totalPrice.toFixed(2)} €</p>
+                <button id="supprim${produit}" class="btn btn-warning">Supprimer</button>
             </div>
         </div>
         `;
 
-        //--suppression produit
-        const suppr = document.getElementById(`supprim${i}`);
-        suppr.addEventListener('click', () => {
-            let elmSuppr = localStorage.removeItem(i);
-            renderBasket();
-        });
+    });
 
 
-        let quantites = document.getElementById(`inputQuantite${i}`);
-        quantites.addEventListener('change', (event) => {
-            const result = document.getElementById('totalPrice');
-            result.textContent = `${price}` * `${event.target.value}`;
-        });
+    console.log(produit);
 
-        //ajout de la nouvelle quantité au LS
-        // localStorage = JSON.stringify(result);
-        //prix total produit parcourir le tableau => totalPrice = prixfinal
+    //--suppression produit
+    const suppr = document.getElementById(`supprim${produit}`);
+    suppr.addEventListener('click', () => {
+        let elmSuppr = localStorage.removeItem(produit);
+        renderBasket();
+    });
 
-    };
+
+    let quantites = document.getElementById(`inputQuantite${produit}`);
+    quantites.addEventListener('change', (event) => {
+        const result = document.getElementById('totalPrice');
+        result.textContent = `${price}` * `${event.target.value}`;
+    });
+
+
+    //ajout de la nouvelle quantité au LS
+    // localStorage = JSON.stringify(result);
+    //prix total produit parcourir le tableau => totalPrice = prixfinal
+
+
 
 };
 
