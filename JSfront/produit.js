@@ -66,7 +66,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
             let lensElm = document.getElementById('inlineFormCustomSelect');
             let quantityElm = document.getElementById('inputQuantite');
 
-            let tabbLs = [];
+            // let tabbLs = [];
 
 
             let toAddTab = {

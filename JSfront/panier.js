@@ -21,25 +21,35 @@ function renderBasket() {
                 <label for="QuantiteProduit">Quantité:</label>
                 <input id="inputQuantite${i}" type="number" min="1" value="${elmPanierJson.quantite}"/>
                 <p>lentilles : ${elmPanierJson.lens}</p>
-                <p>${elmPanierJson.totalPrice.toFixed(2)} €</p>
-                <button id="supprim${i}" class="btn btn-warning">Supprimer</button>
+                <p><span id="totalPrice${i}">${elmPanierJson.totalPrice.toFixed(2)}</span> €</p>
+                <button id="supprim${i}" class="btn btn-secondary" alt="supprimer le produit ">X</button>
             </div>
         </div>
         `;
 
-        //--suppression produit
-        const suppr = document.getElementById(`supprim${i}`);
-        suppr.addEventListener('click', () => {
-            let elmSuppr = localStorage.removeItem(i);
-            renderBasket();
-        });
 
+        //--suppression produit
+        if (`supprim${i}`) {
+            const suppr = document.getElementById(`supprim${i}`);
+            suppr.addEventListener('click', () => {
+                let elmSuppr = localStorage.removeItem(i);
+                renderBasket();
+            });
+        }
 
         let quantites = document.getElementById(`inputQuantite${i}`);
         quantites.addEventListener('change', (event) => {
-            const result = document.getElementById('totalPrice');
-            result.textContent = `${price}` * `${event.target.value}`;
+            const result = document.getElementById(`totalPrice${i}`);
+            result.textContent = `${elmPanierJson.price}` * `${event.target.value}`;
+
+
+
         });
+
+
+
+
+
 
         //ajout de la nouvelle quantité au LS
         // localStorage = JSON.stringify(result);
@@ -54,10 +64,17 @@ if (localStorage.length == 0) {
     inHtml.innerHTML = `<div class="container-fluid">
                     <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
                     <p class="text-center lead">Votre panier est vide :'(</p>
-                    </div>`
+                    </div>`;
+
 } else {
     renderBasket();
 };
+
+// function calculePrice(elmPanierJson.totalPrice) {
+//     
+// };
+
+/* pour le problèem de suppression, peut-être avec un if else, si click sur supprim alors i-- */
 
 
 
