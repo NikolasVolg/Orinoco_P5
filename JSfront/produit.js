@@ -66,9 +66,6 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
             let lensElm = document.getElementById('inlineFormCustomSelect');
             let quantityElm = document.getElementById('inputQuantite');
 
-            // let tabbLs = [];
-
-
             let toAddTab = {
                 idProd: data._id,
                 image: data.imageUrl,
@@ -79,8 +76,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                 price: data.price / 100
             };
 
-
-            let key = localStorage.length + 1;
+            let key = data._id;
 
             localStorage[key] = JSON.stringify(toAddTab);
 

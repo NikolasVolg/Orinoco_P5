@@ -1,12 +1,14 @@
 const inHtml = document.getElementById('main');
 
+
 function renderBasket() {
 
     inHtml.innerHTML = "";
 
-    for (let i = 1; i <= localStorage.length; i += 1) {
-        let elmPanier = localStorage.getItem(i);
-        let elmPanierJson = JSON.parse(elmPanier);
+    for (let i = 0; i < localStorage.length; i++) {
+        let elmPanier = localStorage.key(i);
+        let elmPanierJson = JSON.parse(localStorage.getItem(elmPanier));
+
 
         console.log(elmPanierJson);
 
@@ -22,35 +24,44 @@ function renderBasket() {
                 <input id="inputQuantite${i}" type="number" min="1" value="${elmPanierJson.quantite}"/>
                 <p>lentilles : ${elmPanierJson.lens}</p>
                 <p><span id="totalPrice${i}">${elmPanierJson.totalPrice.toFixed(2)}</span> €</p>
-                <button id="supprim${i}" class="btn btn-secondary" alt="supprimer le produit ">X</button>
+                <button id="supprim${elmPanierJson.idProd}" class="btn btn-secondary" alt="supprimer le produit ">X</button>
             </div>
         </div>
         `;
 
-
         //--suppression produit
-        if (`supprim${i}`) {
-            const suppr = document.getElementById(`supprim${i}`);
-            suppr.addEventListener('click', () => {
-                let elmSuppr = localStorage.removeItem(i);
+        let allButtonsOnPage = document.querySelectorAll('button');
+
+        let logButtonIndex = function(buttonIndex) {
+            console.log('buttonIndex:', buttonIndex);
+        };
+
+        allButtonsOnPage.forEach(function(button, index) {
+            button.addEventListener('click', function() {
+                localStorage.removeItem(elmPanierJson.idProd)
+                logButtonIndex(index);
+                console.log(index);
+                console.log(localStorage);
                 renderBasket();
             });
-        }
+        });
+
+
+
+        // if (localStorage.getItem(elmPanierJson.idProd)) {
+        // let suppr = document.getElementById(`supprim${elmPanierJson.idProd}`);
+        // suppr.addEventListener('click', () => {
+        //     localStorage.removeItem(elmPanierJson.idProd);
+        //     renderBasket();
+        // });
+        //};
 
         let quantites = document.getElementById(`inputQuantite${i}`);
         quantites.addEventListener('change', (event) => {
             const result = document.getElementById(`totalPrice${i}`);
             result.textContent = `${elmPanierJson.price}` * `${event.target.value}`;
 
-
-
         });
-
-
-
-
-
-
         //ajout de la nouvelle quantité au LS
         // localStorage = JSON.stringify(result);
         //prix total produit parcourir le tableau => totalPrice = prixfinal
