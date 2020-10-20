@@ -1,16 +1,15 @@
 const inHtml = document.getElementById('main');
-
 const params = new URLSearchParams(window.location.search);
 
-console.log(params);
 
-fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id du produit clické dans le fetch
+//j'injecte l'id du produit clické dans le fetch
+fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
     .then(response => {
         if (response.ok) {
             return data = response.json()
         } else {
             Promise.reject(response.status);
-        }
+        };
     })
     .then(data => {
 
@@ -67,7 +66,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
             let quantityElm = document.getElementById('inputQuantite');
 
             let toAddTab = {
-                idProd: data._id,
+                _id: data._id,
                 image: data.imageUrl,
                 name: data.name,
                 lens: lensElm.value,
@@ -76,6 +75,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
                 price: data.price / 100
             };
 
+            //-- l'id sera la clé
             let key = data._id;
 
             localStorage[key] = JSON.stringify(toAddTab);
@@ -86,7 +86,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`) //j'injecte l'id 
     });
 
 
-//---Fonction qui calcule le prix total sur la page Produit
+//--- Fonction qui calcule le prix total en fonction de la quantité
 function calculePrice(priceProdUnit) {
     let quantites = document.getElementById('inputQuantite');
     quantites.addEventListener('change', (event) => {
@@ -94,13 +94,3 @@ function calculePrice(priceProdUnit) {
         result.textContent = `${priceProdUnit}` * `${event.target.value}`;
     });
 };
-
-
-// if (localStorage.pushTabb) {
-//     const tab = JSON.parse(localStorage.pushTabb);
-//     tab.push(toAddTabb);
-//     localStorage.setItem('pushTabb', JSON.stringify(tab));
-// } else {
-//     tabbLs.push(toAddTabb);
-//     localStorage.setItem('pushTabb', JSON.stringify(tabbLs));
-// };

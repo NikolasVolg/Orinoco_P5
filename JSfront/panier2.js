@@ -1,114 +1,63 @@
 const inHtml = document.getElementById('main');
+const prixInHtml = document.getElementById('finalPrice');
 
-function renderBasket() {
+//--Boucle de création du HTML--
+for (let i = 0; i < localStorage.length; i++) {
+    let elmPanier = localStorage.key(i);
+    let data = JSON.parse(localStorage.getItem(elmPanier));
 
-    inHtml.innerHTML = "";
-
-
-    let elmPanier = JSON.parse(localStorage.plop);
-    elmPanier.forEach(produit => {
-
-        inHtml.innerHTML += `
-        <div class="row m-4 panierLine">
-            <div class="col-lg-4">
-                <img alt="${produit.name}" class="img-fluid" src="${produit.image}">
+    inHtml.innerHTML += `
+        <div class="row m-2 panierLine">
+            <div class="col-lg-2">
+                <img alt="${data.name}" class="img-fluid" src="${data.image}">
             </div>
 
-            <div class="col-lg-7">
-                <h2>${produit.name}</h2>
-                <label for="QuantiteProduit">Quantité:</label>
-                <input id="inputQuantite${produit}" type="number" min="1" value="${produit.quantite}"/>
-                <p>lentilles : ${produit.lens}</p>
-                <p>${produit.totalPrice.toFixed(2)} €</p>
-                <button id="supprim${produit}" class="btn btn-warning">Supprimer</button>
+            <div class="col-lg-4">
+                <a href="produit.html?id=${data._id}"><h2 class="mb-2">${data.name}</h2></a>
+                <p><strong>Quantité</strong> : ${data.quantite}</p>
+                <p><strong>Lentilles</strong> : ${data.lens}</p>
+            </div>
+
+            <div class="col-lg-5"
+                <p class="prixProduitPanier"><strong>Prix : <span>${data.totalPrice.toFixed(2)} €</span></strong></p>   
+            </div>
+
+            <div class="col-lg-1">
+            <i onclick="supprimerItem('${data._id}')" class="far fa-times-circle"></i>
+                
             </div>
         </div>
         `;
 
-    });
-
-
-    console.log(produit);
-
-    //--suppression produit
-    const suppr = document.getElementById(`supprim${produit}`);
-    suppr.addEventListener('click', () => {
-        let elmSuppr = localStorage.removeItem(produit);
-        renderBasket();
-    });
-
-
-    let quantites = document.getElementById(`inputQuantite${produit}`);
-    quantites.addEventListener('change', (event) => {
-        const result = document.getElementById('totalPrice');
-        result.textContent = `${price}` * `${event.target.value}`;
-    });
-
-
-    //ajout de la nouvelle quantité au LS
-    // localStorage = JSON.stringify(result);
-    //prix total produit parcourir le tableau => totalPrice = prixfinal
-
-
-
 };
 
 
+/* <button onclick="supprimerItem('${data._id}')" class="btn btn-dark" alt="supprimer le produit">Supprimer</button> */
+
+
+//-- fonction de suppression d'un produit
+function supprimerItem(_id) {
+    localStorage.removeItem(_id);
+    document.location.href = 'panier.html';
+};
+
+
+//-- boucle permettant l'affichage d'un message si panier vide
 if (localStorage.length == 0) {
     inHtml.innerHTML = `<div class="container-fluid">
-                    <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
-                    <p class="text-center lead">Votre panier est vide :'(</p>
-                    </div>`
-} else {
-    renderBasket();
-};
-
-
-
-
-//parcourir querySelectorAll
-
-
-
-
-
-
-
-//------ajouter un bouton CONTINUER MES ACHATS !!!
-
-/* Idee DRY créer un function test regExp () {
-
-    if
-    else if
-    esle
-} 
-
-const validPrenom = function(inputPrenom) {
-
-    let prenomRegExp = new RegExp (ici regex en variable comme toute les autres)
-
-
-    console.log(validPrenom);
-
-   et ici on place la fonction {
-       if 
-       else if
-       else
-   }
+                            <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
+                            <p class="text-center lead">Votre panier est vide :'(</p>
+                        </div>`;
 
 };
 
 
-*/
 
 /*************VALIDATION FORMULAIRE******************/
 
-//if (input = NULL) {alert("touts les champs sont obligatoires")} 
-
-
 let form = document.querySelector('#submitForm');
 
-//--ecoute modification Prénom
+//--Ecoute modification Prénom
 form.prenom.addEventListener('change', function() {
     validPrenom(this);
 });
@@ -141,7 +90,7 @@ form.addEventListener('submit', function(e) {
         validEmail(form.email)) {
         form.submit();
     } else {
-        alert("Ola coquinou ! Tous les champs sont obligatoire et doivent être valide");
+        alert("Hop là, coquinou ! Tous les champs sont obligatoire et doivent être valide");
     }
 
 });
@@ -245,7 +194,7 @@ const validVille = function(inputVille) {
 };
 
 //--Validation Email
-const validEmail = function(inputEmail) {
+const validEmail = (inputEmail) => {
 
     let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
     let small = inputEmail.nextElementSibling;
@@ -265,15 +214,6 @@ const validEmail = function(inputEmail) {
 
 
 
-
-
-
-
-
-
-
-
-
 /* comment enregistrer un tableau d’is dans le localStorage ???
 
 L'info est donnée dans le backend enfin une partie. 
@@ -282,9 +222,6 @@ tu trouveras de les lignes 39 à 46 sur les 3 fichiers.
 
 Tu dois faire un setItem stringify pour le transformer en chaîne de caractère. 
 Et pour le récupérer tu le parse */
-
-
-
 
 
 
@@ -302,6 +239,3 @@ Et pour le récupérer tu le parse */
  *
  * regex pour le formulaire
  */
-
-
-//console.log des produits à commander ! boucle while
