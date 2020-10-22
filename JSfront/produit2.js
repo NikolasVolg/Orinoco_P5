@@ -79,8 +79,15 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
 
             let zelda = toAddTabb.push(objetTabb);
 
-            localStorage.setItem("basketContent", JSON.stringify(zelda));
-            //pourquoi j'ai un 1 en valeur dans mon LS ? Enculé de JS !
+            console.log(toAddTabb);
+
+            //aller maintenant on fait la condition
+            if (localStorage == null) {
+                localStorage.setItem("basketContent", JSON.stringify(toAddTabb));
+            } else {
+                localStorage.getItem("basketContent", JSON.parse(toAddTabb));
+
+            };
 
         };
 
