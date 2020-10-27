@@ -65,8 +65,6 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
             let lensElm = document.getElementById('inlineFormCustomSelect');
             let quantityElm = document.getElementById('inputQuantite');
 
-            let toAddTabb = [];
-
             let objetTabb = {
                 _id: data._id,
                 image: data.imageUrl,
@@ -77,17 +75,31 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
                 price: data.price / 100
             };
 
-            let zelda = toAddTabb.push(objetTabb);
-
-            console.log(toAddTabb);
 
             //aller maintenant on fait la condition
-            if (localStorage == null) {
-                localStorage.setItem("basketContent", JSON.stringify(toAddTabb));
-            } else {
-                localStorage.getItem("basketContent", JSON.parse(toAddTabb));
+            let basket = JSON.parse(localStorage.getItem("basket"));
+            if (basket == null) basket = [];
+            localStorage.setItem("basket", JSON.stringify(objetTabb));
+            basket.push(objetTabb);
+            localStorage.setItem("basket", JSON.stringify(basket));
 
-            };
+            window.location.href = 'panier.html';
+
+            function removeDuplicates(basket) {
+                localStorage.getItem("basket", JSON.parse(basket))
+                let unique = {};
+                basket.forEach(function(_id) {
+                    if (!unique[_id]) {
+                        unique[_id] = true;
+                    }
+                });
+                localStorage.setItem("basket", JSON.stringify(basket));
+                return Object.keys(unique);
+
+            }
+            uniqueBasket = removeDuplicates(basket);
+            console.log(uniqueBasket);
+
 
         };
 

@@ -31,16 +31,12 @@ for (let i = 0; i < localStorage.length; i++) {
 
 };
 
-
-/* <button onclick="supprimerItem('${data._id}')" class="btn btn-dark" alt="supprimer le produit">Supprimer</button> */
-
-
 //-- fonction de suppression d'un produit
 function supprimerItem(_id) {
-    localStorage.removeItem(_id);
+    let tab = localStorage.removeItem(_id);
+    tab = tab.filter(item => item !== _id)
     document.location.href = 'panier.html';
 };
-
 
 //-- boucle permettant l'affichage d'un message si panier vide
 if (localStorage.length == 0) {
@@ -55,7 +51,7 @@ if (localStorage.length == 0) {
 
 /*************VALIDATION FORMULAIRE******************/
 
-let form = document.querySelector('#submitForm');
+const form = document.querySelector('#submitForm');
 
 //--Ecoute modification Prénom
 form.prenom.addEventListener('change', function() {
