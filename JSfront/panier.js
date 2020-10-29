@@ -23,8 +23,7 @@ for (let i = 0; i < localStorage.length; i++) {
             </div>
 
             <div class="col-lg-1">
-            <i onclick="supprimerItem('${data._id}')" class="far fa-times-circle"></i>
-                
+                <i onclick="supprimerItem('${data._id}')" class="far fa-times-circle"></i>
             </div>
         </div>
         `;

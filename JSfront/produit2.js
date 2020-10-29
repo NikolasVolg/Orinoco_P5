@@ -76,30 +76,24 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
             };
 
 
-            //aller maintenant on fait la condition
+            //--ajout au LS
+            const array = [];
+            const backArray = [...array];
+
+            let basketFull = JSON.parse(localStorage.getItem("basket"));
+
+            if (basketFull == null) basketFull = new Set(array);
+            backArray.push(objetTabb);
+            localStorage.setItem("basket", JSON.stringify(backArray));
+
+            window.location.href = 'panier.html';
+
+            /* code origin
             let basket = JSON.parse(localStorage.getItem("basket"));
             if (basket == null) basket = [];
             localStorage.setItem("basket", JSON.stringify(objetTabb));
             basket.push(objetTabb);
-            localStorage.setItem("basket", JSON.stringify(basket));
-
-            window.location.href = 'panier.html';
-
-            function removeDuplicates(basket) {
-                localStorage.getItem("basket", JSON.parse(basket))
-                let unique = {};
-                basket.forEach(function(_id) {
-                    if (!unique[_id]) {
-                        unique[_id] = true;
-                    }
-                });
-                localStorage.setItem("basket", JSON.stringify(basket));
-                return Object.keys(unique);
-
-            }
-            uniqueBasket = removeDuplicates(basket);
-            console.log(uniqueBasket);
-
+            localStorage.setItem("basket", JSON.stringify(basket));*/
 
         };
 

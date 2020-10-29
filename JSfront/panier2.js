@@ -2,44 +2,47 @@ const inHtml = document.getElementById('main');
 const prixInHtml = document.getElementById('finalPrice');
 
 //--Boucle de création du HTML--
-for (let i = 0; i < localStorage.length; i++) {
-    let elmPanier = localStorage.key(i);
-    let data = JSON.parse(localStorage.getItem(elmPanier));
+// for (let i = 0; i < localStorage.length; i++) {
+//     let elmPanier = localStorage.key(i);
+let data = JSON.parse(localStorage.getItem("basket"));
+data.forEach(objet => {
 
     inHtml.innerHTML += `
         <div class="row m-2 panierLine">
             <div class="col-lg-2">
-                <img alt="${data.name}" class="img-fluid" src="${data.image}">
+                <img alt="${objet.name}" class="img-fluid" src="${objet.image}">
             </div>
 
             <div class="col-lg-4">
-                <a href="produit.html?id=${data._id}"><h2 class="mb-2">${data.name}</h2></a>
-                <p><strong>Quantité</strong> : ${data.quantite}</p>
-                <p><strong>Lentilles</strong> : ${data.lens}</p>
+                <a href="produit.html?id=${objet._id}"><h2 class="mb-2">${objet.name}</h2></a>
+                <p><strong>Quantité</strong> : ${objet.quantite}</p>
+                <p><strong>Lentilles</strong> : ${objet.lens}</p>
             </div>
 
             <div class="col-lg-5"
-                <p class="prixProduitPanier"><strong>Prix : <span>${data.totalPrice.toFixed(2)} €</span></strong></p>   
+                <p class="prixProduitPanier"><strong>Prix : <span>${objet.totalPrice.toFixed(2)} €</span></strong></p>   
             </div>
 
             <div class="col-lg-1">
-            <i onclick="supprimerItem('${data._id}')" class="far fa-times-circle"></i>
-                
+                <i onclick="supprimerItem('${objet._id}')" class="far fa-times-circle"></i>  
             </div>
         </div>
         `;
 
-};
+});
 
 //-- fonction de suppression d'un produit
+
 function supprimerItem(_id) {
-    let tab = localStorage.removeItem(_id);
-    tab = tab.filter(item => item !== _id)
+    localStorage.removeItem(_id);
     document.location.href = 'panier.html';
 };
 
+
+
+
 //-- boucle permettant l'affichage d'un message si panier vide
-if (localStorage.length == 0) {
+if (localStorage("basket") == 0) {
     inHtml.innerHTML = `<div class="container-fluid">
                             <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
                             <p class="text-center lead">Votre panier est vide :'(</p>
