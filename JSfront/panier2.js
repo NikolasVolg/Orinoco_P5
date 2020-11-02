@@ -34,21 +34,23 @@ data.forEach(objet => {
 //-- fonction de suppression d'un produit
 
 function supprimerItem(_id) {
-    localStorage.removeItem(_id);
+    let supprItem = JSON.parse(localStorage.length("basket"));
+    supprItem.splice(_id);
+    localStorage.setItem("basket", JSON.stringify(supprItem));
     document.location.href = 'panier.html';
 };
 
-
-
-
-//-- boucle permettant l'affichage d'un message si panier vide
-if (localStorage("basket") == 0) {
+//-- condition permettant l'affichage d'un message si panier vide
+if (data == null) {
     inHtml.innerHTML = `<div class="container-fluid">
-                            <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
-                            <p class="text-center lead">Votre panier est vide :'(</p>
-                        </div>`;
+                        <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
+                        <p class="text-center lead">Votre panier est vide :'(</p>
+                    </div>`;
 
 };
+
+
+
 
 
 

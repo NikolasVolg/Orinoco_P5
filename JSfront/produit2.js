@@ -77,14 +77,30 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
 
 
             //--ajout au LS
-            const array = [];
-            const backArray = [...array];
-
             let basketFull = JSON.parse(localStorage.getItem("basket"));
 
-            if (basketFull == null) basketFull = new Set(array);
-            backArray.push(objetTabb);
-            localStorage.setItem("basket", JSON.stringify(backArray));
+            //--ajout au LS
+
+            // si je n'ai pas de panier je dois dire que c'est un tableau mais sinon j'ajoute tout pareil
+            if (!basketFull) {
+                let basketFull = [];
+                basketFull.push(objetTabb);
+                localStorage.setItem("basket", JSON.stringify(basketFull));
+                window.location.href = 'panier.html';
+
+                // sinon si j'ai un panier...    
+            } else if (!basketFull.some(p => p._id === objetTabb._id)) {
+
+                // je vérifie que je n'ai pas déjà mon objet dans le panier avant d'ajouter 
+                basketFull.push(objetTabb);
+                localStorage.setItem("basket", JSON.stringify(basketFull));
+
+                // sinon je l'ai déjà dans le panier alors j'enlève le précédent produit pour ajouter le nouveau avec la nouvelle quantité
+            } else {
+                const newBasket = basketFull.filter(p => p._id !== objetTabb._id)
+                newBasket.push(objetTabb);
+                localStorage.setItem("basket", JSON.stringify(newBasket));
+            }
 
             window.location.href = 'panier.html';
 
