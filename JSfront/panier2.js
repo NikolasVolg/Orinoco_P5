@@ -4,50 +4,56 @@ const prixInHtml = document.getElementById('finalPrice');
 //--Boucle de création du HTML--
 // for (let i = 0; i < localStorage.length; i++) {
 //     let elmPanier = localStorage.key(i);
-let data = JSON.parse(localStorage.getItem("basket"));
-data.forEach(objet => {
+//-- condition permettant l'affichage d'un message si panier vide
 
-    inHtml.innerHTML += `
-        <div class="row m-2 panierLine">
-            <div class="col-lg-2">
-                <img alt="${objet.name}" class="img-fluid" src="${objet.image}">
+if (localStorage.length > 0) {
+    let data = JSON.parse(localStorage.getItem("basket"));
+    data.forEach(objet => {
+
+        inHtml.innerHTML += `
+            <div class="row m-2 panierLine">
+                <div class="col-lg-2">
+                    <img alt="${objet.name}" class="img-fluid" src="${objet.image}">
+                </div>
+
+                <div class="col-lg-4">
+                    <a href="produit.html?id=${objet._id}"><h2 class="mb-2">${objet.name}</h2></a>
+                    <p><strong>Quantité</strong> : ${objet.quantite}</p>
+                    <p><strong>Lentilles</strong> : ${objet.lens}</p>
+                </div>
+
+                <div class="col-lg-5"
+                    <p class="prixProduitPanier"><strong>Prix : <span>${objet.totalPrice.toFixed(2)} €</span></strong></p>   
+                </div>
+
+                <div class="col-lg-1">
+                    <i onclick="deleteItem('${objet._id}')" class="far fa-times-circle"></i>  
+                </div>
             </div>
+            `;
 
-            <div class="col-lg-4">
-                <a href="produit.html?id=${objet._id}"><h2 class="mb-2">${objet.name}</h2></a>
-                <p><strong>Quantité</strong> : ${objet.quantite}</p>
-                <p><strong>Lentilles</strong> : ${objet.lens}</p>
-            </div>
+    });
 
-            <div class="col-lg-5"
-                <p class="prixProduitPanier"><strong>Prix : <span>${objet.totalPrice.toFixed(2)} €</span></strong></p>   
-            </div>
-
-            <div class="col-lg-1">
-                <i onclick="supprimerItem('${objet._id}')" class="far fa-times-circle"></i>  
-            </div>
-        </div>
-        `;
-
-});
+} else {
+    inHtml.innerHTML = `
+        <div class="container-fluid">
+            <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
+            <p class="text-center lead">Votre panier est vide :'(</p>
+        </div>`;
+}
 
 //-- fonction de suppression d'un produit
 
-function supprimerItem(_id) {
-    let supprItem = JSON.parse(localStorage.length("basket"));
+function deleteItem(_id) {
+    let supprItem = JSON.parse(localStorage.getItem("basket").length);
+    console.log(supprItem);
     supprItem.splice(_id);
     localStorage.setItem("basket", JSON.stringify(supprItem));
     document.location.href = 'panier.html';
 };
 
-//-- condition permettant l'affichage d'un message si panier vide
-if (data == null) {
-    inHtml.innerHTML = `<div class="container-fluid">
-                        <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
-                        <p class="text-center lead">Votre panier est vide :'(</p>
-                    </div>`;
 
-};
+
 
 
 

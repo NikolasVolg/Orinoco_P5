@@ -43,6 +43,7 @@ function supprimerItem(_id) {
 
 //-- boucle permettant l'affichage d'un message si panier vide
 if (localStorage.length == 0) {
+    console.log(localStorage.length)
     inHtml.innerHTML = `<div class="container-fluid">
                             <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
                             <p class="text-center lead">Votre panier est vide :'(</p>
