@@ -2,67 +2,60 @@ const inHtml = document.getElementById('main');
 const prixInHtml = document.getElementById('finalPrice');
 
 //--Boucle de création du HTML--
-// for (let i = 0; i < localStorage.length; i++) {
-//     let elmPanier = localStorage.key(i);
-//-- condition permettant l'affichage d'un message si panier vide
+for (let i = 0; i < localStorage.length; i++) {
+    let elmPanier = localStorage.key(i);
+    let data = JSON.parse(localStorage.getItem(elmPanier));
 
-if (localStorage.length > 0) {
-    let data = JSON.parse(localStorage.getItem("basket"));
-    data.forEach(objet => {
-
-        inHtml.innerHTML += `
-            <div class="row m-2 panierLine">
-                <div class="col-lg-2">
-                    <img alt="${objet.name}" class="img-fluid" src="${objet.image}">
-                </div>
-
-                <div class="col-lg-4">
-                    <a href="produit.html?id=${objet._id}"><h2 class="mb-2">${objet.name}</h2></a>
-                    <p><strong>Quantité</strong> : ${objet.quantite}</p>
-                    <p><strong>Lentilles</strong> : ${objet.lens}</p>
-                </div>
-
-                <div class="col-lg-5"
-                    <p class="prixProduitPanier"><strong>Prix : <span>${objet.totalPrice.toFixed(2)} €</span></strong></p>   
-                </div>
-
-                <div class="col-lg-1">
-                    <i onclick="deleteItem('${objet._id}')" class="far fa-times-circle"></i>  
-                </div>
+    inHtml.innerHTML += `
+        <div class="row m-2 panierLine">
+            <div class="col-lg-2">
+                <img alt="${data.name}" class="img-fluid" src="${data.image}">
             </div>
-            `;
 
-    });
+            <div class="col-lg-4">
+                <a href="produit.html?id=${data._id}"><h2 class="mb-2">${data.name}</h2></a>
+                <p><strong>Quantité</strong> : ${data.quantite}</p>
+                <p><strong>Lentilles</strong> : ${data.lens}</p>
+            </div>
 
-} else {
-    inHtml.innerHTML = `
-        <div class="container-fluid">
-            <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
-            <p class="text-center lead">Votre panier est vide :'(</p>
-        </div>`;
-}
+            <div class="col-lg-5"
+                <p class="prixProduitPanier"><strong>Prix : <span>${data.totalPrice.toFixed(2)} €</span></strong></p>   
+            </div>
+
+            <div class="col-lg-1">
+                <i onclick="supprimerItem('${data._id}')" class="far fa-times-circle"></i>
+            </div>
+        </div>
+        `;
+
+};
+
+
+/* <button onclick="supprimerItem('${data.idProd}')" class="btn btn-dark" alt="supprimer le produit">Supprimer</button> */
+
 
 //-- fonction de suppression d'un produit
-
-function deleteItem(_id) {
-    let supprItem = JSON.parse(localStorage.getItem("basket").length);
-    console.log(supprItem);
-    supprItem.splice(_id);
-    localStorage.setItem("basket", JSON.stringify(supprItem));
+function supprimerItem(_id) {
+    localStorage.removeItem(_id);
     document.location.href = 'panier.html';
 };
 
 
+//-- boucle permettant l'affichage d'un message si panier vide
+if (localStorage.length == 0) {
+    console.log(localStorage.lenght)
+    inHtml.innerHTML = `<div class="container-fluid">
+                            <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
+                            <p class="text-center lead">Votre panier est vide :'(</p>
+                        </div>`;
 
-
-
-
+};
 
 
 
 /*************VALIDATION FORMULAIRE******************/
 
-const form = document.querySelector('#submitForm');
+let form = document.querySelector('#submitForm');
 
 //--Ecoute modification Prénom
 form.prenom.addEventListener('change', function() {

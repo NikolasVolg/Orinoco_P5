@@ -40,7 +40,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
                                     ${lens}   
                                 </select>        
                             </div>
-                        <p><strong>Prix total</strong> : <span id="totalPrice">${priceProdUnit.toFixed(2)}</span> €</p>
+                        <p><strong>Prix total</strong> : <span id="totalPrice">${priceProdUnit}</span> €</p>
                         <button id="btnAjoutId" type="button" class="btn btn-success">Ajouter au panier</button>
                     </form>   
                 </div>
@@ -58,29 +58,50 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
         });
 
 
-        //---on catch les données voulues et on stocke dans un objet
+        //--On catch les données voulues et on stocke dans un objet
         function ajoutLocalStor() {
 
 
             let lensElm = document.getElementById('inlineFormCustomSelect');
             let quantityElm = document.getElementById('inputQuantite');
 
-            let toAddTab = {
+            let objetTabb = {
                 _id: data._id,
                 image: data.imageUrl,
                 name: data.name,
                 lens: lensElm.value,
                 quantite: quantityElm.value,
-                totalPrice: (data.price * parseInt(quantityElm.value)) / 100,
+                totalPrice: ((data.price * parseInt(quantityElm.value)) / 100),
                 price: data.price / 100
             };
 
-            //-- l'id sera la clé
-            let key = data._id;
 
-            localStorage[key] = JSON.stringify(toAddTab);
+            //--ajout au LS
+            let basketFull = JSON.parse(localStorage.getItem("basket"));
+
+            // si je n'ai pas de panier je dois dire que c'est un tableau mais sinon j'ajoute tout pareil
+            if (!basketFull) {
+                let basketFull = [];
+                basketFull.push(objetTabb);
+                localStorage.setItem("basket", JSON.stringify(basketFull));
+                window.location.href = 'panier.html';
+
+                // sinon si j'ai un panier...    
+            } else if (!basketFull.some(p => p._id === objetTabb._id)) {
+
+                // je vérifie que je n'ai pas déjà mon objet dans le panier avant d'ajouter 
+                basketFull.push(objetTabb);
+                localStorage.setItem("basket", JSON.stringify(basketFull));
+
+                // sinon je l'ai déjà dans le panier alors j'enlève le précédent produit pour ajouter le nouveau avec la nouvelle quantité
+            } else {
+                const newBasket = basketFull.filter(p => p._id !== objetTabb._id)
+                newBasket.push(objetTabb);
+                localStorage.setItem("basket", JSON.stringify(newBasket));
+            };
 
             window.location.href = 'panier.html';
+
         };
 
     });
