@@ -8,6 +8,8 @@ const prixInHtml = document.getElementById('finalPrice');
 
 if (localStorage.length > 0) {
     let data = JSON.parse(localStorage.getItem("basket"));
+
+    console.log(data);
     data.forEach(objet => {
 
         inHtml.innerHTML += `
@@ -31,9 +33,6 @@ if (localStorage.length > 0) {
                 </div>
             </div>
             `;
-
-
-
     });
 
 
@@ -49,23 +48,31 @@ if (localStorage.length > 0) {
 
 function deleteItem(_id) {
     let supprItem = JSON.parse(localStorage.getItem("basket").length);
+
     console.log(supprItem);
+
     supprItem.filter(_id, "basket");
     localStorage.setItem("basket", JSON.stringify(supprItem));
     document.location.href = 'panier.html';
 };
 
-const CalculTotalPrice = async() => {
-    const finalPriceProd = await basket.reduce(function(accumulator, objet) {
-        console.log(accumulator);
-        return accumulator + objet.totalPrice;
+//-- Calcul du prix total Panier
 
-    });
+function CalculPrixPanier() {
+    let recupPrice = JSON.parse(localStorage.getItem("basket").length);
 
-    prixInHtml.innerHTML = `${finalPriceProd}`;
+    console.log(recupPrice);
+
+    let totalPricePanier = recupPrice.reduce((accumulator, totalPrice) => {
+
+        console.log(totalPricePanier);
+
+        return accumulator + recupPrice.totalPrice;
+    }, 0);
+
+    prixInHtml.innerHTML = `${totalPricePanier}`;
+
 };
-
-
 
 
 

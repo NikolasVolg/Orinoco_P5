@@ -47,7 +47,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
                 `;
 
 
-        //--variables qui récupère les fonctions d'écoute pour le prix total
+        //--variables qui récupère la fonction d'écoute et de calcul pour le prix total
         let functionPrice = calculePrice(priceProdUnit);
 
         //--On écoute le petit bouton, mais tu ne sais pas cliquer !
