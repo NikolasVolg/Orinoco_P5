@@ -1,15 +1,11 @@
 const inHtml = document.getElementById('main');
 const prixInHtml = document.getElementById('finalPrice');
 
-//--Boucle de création du HTML--
-// for (let i = 0; i < localStorage.length; i++) {
-//     let elmPanier = localStorage.key(i);
-//-- condition permettant l'affichage d'un message si panier vide
-
 if (localStorage.length > 0) {
     let data = JSON.parse(localStorage.getItem("basket"));
 
-    console.log(data);
+    prixInHtml.innerHTML = CalculPrixPanier() + " € (euros)"; //rappel fonction prix total
+
     data.forEach(objet => {
 
         inHtml.innerHTML += `
@@ -36,7 +32,7 @@ if (localStorage.length > 0) {
     });
 
 
-} else {
+} else if (localStorage.length == 0) {
     inHtml.innerHTML = `
         <div class="container-fluid">
             <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
@@ -47,31 +43,25 @@ if (localStorage.length > 0) {
 //-- fonction de suppression d'un produit
 
 function deleteItem(_id) {
-    let supprItem = JSON.parse(localStorage.getItem("basket").length);
+    let supprItem = JSON.parse(localStorage.getItem("basket"));
 
-    console.log(supprItem);
+    console.log(_id);
 
-    supprItem.filter(_id, "basket");
-    localStorage.setItem("basket", JSON.stringify(supprItem));
+    const lsUpdate = supprItem.filter(objet => objet._id !== _id);
+    localStorage.setItem("basket", JSON.stringify(lsUpdate));
     document.location.href = 'panier.html';
 };
 
 //-- Calcul du prix total Panier
 
 function CalculPrixPanier() {
-    let recupPrice = JSON.parse(localStorage.getItem("basket").length);
+    let itemPrice = JSON.parse(localStorage.getItem("basket"));
+    let totalPriceItem = itemPrice.reduce((accumulator, item) => {
 
-    console.log(recupPrice);
-
-    let totalPricePanier = recupPrice.reduce((accumulator, totalPrice) => {
-
-        console.log(totalPricePanier);
-
-        return accumulator + recupPrice.totalPrice;
+        return accumulator + item.totalPrice;
     }, 0);
 
-    prixInHtml.innerHTML = `${totalPricePanier}`;
-
+    return totalPriceItem;
 };
 
 
