@@ -280,21 +280,23 @@ donneeValid.addEventListener("click", function() {
     })
 
     .then(response => {
-        if (response.ok) {
-            return response.json()
-        } else {
-            Promise.reject(response.status);
-        };
-    });
+            if (response.ok) {
+                return response.json()
+            } else {
+                Promise.reject(response.status);
+            };
+        })
+        .then(function(json) {
+            orderID = json.orderId;
+            let count = json.data.length;
+            for (let i = 0; i < count; i++) {
+                total += json.data[i].price;
+            }
+            window.location.href = 'confirm.html';
+            return orderID, totalPriceItem;
 
-    .then(function(json) {
-        orderID = json.orderId;
-        let count = json.data.length;
-        for (let i = 0; i < count; i++) {
-            total += json.data[i].price;
-        }
-        return orderID, totalPriceItem;
-    });
+        })
+
     .catch(error);
     console.log(error);
 });
