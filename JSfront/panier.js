@@ -229,74 +229,64 @@ const validEmail = (inputEmail) => {
 };
 
 
+// cameras en tant que tableau à envoyer en POST
+const products = []
+data.forEach(camera => {
+    products.push(camera._id)
+});
 
-
-
-/* comment enregistrer un tableau d’is dans le localStorage ???
-
-L'info est donnée dans le backend enfin une partie. 
-Dans le fichier controllers, moi j'ai pris les ours, 
-tu trouveras de les lignes 39 à 46 sur les 3 fichiers.
-
-Tu dois faire un setItem stringify pour le transformer en chaîne de caractère. 
-Et pour le récupérer tu le parse */
-
-
-
-/**
- *
- * Expects request to contain:
- * contact: {
- *   firstName: string,
- *   lastName: string,
- *   address: string,
- *   city: string,
- *   email: string
- * }
- * products: [string] <-- array of product _id
- *
- * regex pour le formulaire
- */
-
+console.log(products);
 
 //fonction d'envoie au back
 
 donneeValid.addEventListener("click", function() {
 
-    let contactForm = {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        address: address.value,
-        city: city.value,
-        email: email.value
+    // utilisateur à envoyer en objet en POST
+    let contact = {
+        firstName: validPrenom.value,
+        lastName: validNom.value,
+        address: validAdresse.value,
+        city: validVille.value,
+        email: validEmail.value
     };
 
-    fetch('http://localhost:3000/api/cameras/order', {
-        method: "POST",
+    console.log(contact);
+
+    // crée data comme objet contact + tableau products
+    const data = { contact, products }
+
+    console.log(data);
+
+    // en-têtes pour la requête (dire qu'elle est POST et non GET notamment)
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(data),
         headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ contactForm, data })
+            'Content-Type': 'application/json'
+        }
+    };
+    console.log(option);
+
+    // la requête POST en elle-même
+    fetch('http://localhost:3000/api/cameras/order', option)
+
+    // reçoit les données du back
+    .then(response => {
+        if (response.ok) {
+            return response.json()
+        } else {
+            Promise.reject(response.status);
+        };
     })
 
-    .then(response => {
-            if (response.ok) {
-                return response.json()
-            } else {
-                Promise.reject(response.status);
-            };
-        })
-        .then(function(json) {
-            orderID = json.orderId;
-            let count = json.data.length;
-            for (let i = 0; i < count; i++) {
-                total += json.data[i].price;
-            }
-            window.location.href = 'confirm.html';
-            return orderID, totalPriceItem;
+    // traitement pour l'obtention du numéro de commmande
+    .then(function(data) {
+        const orderId = data.orderId
+        window.location.href = 'confirm.html';
+    })
 
-        })
+    .catch(function(error) {
+        alert(error)
+    })
 
-    .catch(error);
-    console.log(error);
 });
