@@ -32,7 +32,10 @@ if (localStorage.length > 0) {
     });
 
 
-} else if (localStorage.length == 0) {
+} else {
+
+    console.log(localStorage);
+
     inHtml.innerHTML = `
         <div class="container-fluid">
             <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
@@ -227,6 +230,8 @@ const validEmail = (inputEmail) => {
 
 
 
+
+
 /* comment enregistrer un tableau d’is dans le localStorage ???
 
 L'info est donnée dans le backend enfin une partie. 
@@ -252,3 +257,44 @@ Et pour le récupérer tu le parse */
  *
  * regex pour le formulaire
  */
+
+
+//fonction d'envoie au back
+
+donneeValid.addEventListener("click", function() {
+
+    let contactForm = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value
+    };
+
+    fetch('http://localhost:3000/api/cameras/order', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ contactForm, data })
+    })
+
+    .then(response => {
+        if (response.ok) {
+            return response.json()
+        } else {
+            Promise.reject(response.status);
+        };
+    });
+
+    .then(function(json) {
+        orderID = json.orderId;
+        let count = json.data.length;
+        for (let i = 0; i < count; i++) {
+            total += json.data[i].price;
+        }
+        return orderID, totalPriceItem;
+    });
+    .catch(error);
+    console.log(error);
+});
