@@ -1,8 +1,9 @@
 const inHtml = document.getElementById('main');
 const prixInHtml = document.getElementById('finalPrice');
+const btnCommande = document.getElementById('btnCom');
+let data = JSON.parse(localStorage.getItem("basket"));
 
 if (localStorage.length > 0) {
-    let data = JSON.parse(localStorage.getItem("basket"));
 
     prixInHtml.innerHTML = CalculPrixPanier() + " € (euros)"; //rappel fonction prix total
 
@@ -32,7 +33,7 @@ if (localStorage.length > 0) {
     });
 
 
-} else {
+} else if (totalPriceItem == 0) {
 
     console.log(localStorage);
 
@@ -41,7 +42,7 @@ if (localStorage.length > 0) {
             <img class="center-block gif" alt="" src="images/polizas_gif.gif" />
             <p class="text-center lead">Votre panier est vide :'(</p>
         </div>`;
-}
+};
 
 //-- fonction de suppression d'un produit
 
@@ -99,7 +100,7 @@ form.email.addEventListener('change', function() {
 });
 
 //--Ecoute soumission formulaire
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (validPrenom(form.prenom) && validNom(form.nom) &&
         validAdresse(form.adresse) && validVille(form.ville) &&
@@ -112,12 +113,10 @@ form.addEventListener('submit', function(e) {
 });
 
 //--Validation Prénom
-const validPrenom = function(inputPrenom) {
+const validPrenom = (inputPrenom) => {
 
     let prenomRegExp = new RegExp('^[a-zA-ZÀ-ú\-\s]*', 'g');
     let small = inputPrenom.nextElementSibling;
-
-    console.log(validPrenom);
 
     if (inputPrenom.value == "" || inputPrenom.value.length < 2) {
         small.innerHTML = `Requis : 2 caractères minimum !`;
@@ -138,7 +137,7 @@ const validPrenom = function(inputPrenom) {
 };
 
 //--Validation Nom
-const validNom = function(inputNom) {
+const validNom = (inputNom) => {
 
     let nomRegExp = new RegExp('^[a-zA-ZÀ-ú\-\s]*', 'g');
     let small = inputNom.nextElementSibling;
@@ -162,7 +161,7 @@ const validNom = function(inputNom) {
 };
 
 //--Validation Adresse
-const validAdresse = function(inputAdresse) {
+const validAdresse = (inputAdresse) => {
 
     let adresseRegExp = new RegExp('^[a-zA-ZÀ-ú\-\s]*', 'g');
     let small = inputAdresse.nextElementSibling;
@@ -186,7 +185,7 @@ const validAdresse = function(inputAdresse) {
 };
 
 //--Validation Ville
-const validVille = function(inputVille) {
+const validVille = (inputVille) => {
 
     let villeRegExp = new RegExp('^[a-zA-ZÀ-ú\-\s]*', 'g');
     let small = inputVille.nextElementSibling;
@@ -229,6 +228,9 @@ const validEmail = (inputEmail) => {
 };
 
 
+// ***************** ENVOIE DES DONNEES AU BACK ***********************
+
+
 // cameras en tant que tableau à envoyer en POST
 const products = []
 data.forEach(camera => {
@@ -237,51 +239,51 @@ data.forEach(camera => {
 
 console.log(products);
 
-//fonction d'envoie au back
+// utilisateur à envoyer en objet en POST
+let contact = {
+    firstName: validPrenom.value,
+    lastName: validNom.value,
+    address: validAdresse.value,
+    city: validVille.value,
+    email: validEmail.value
+};
 
-donneeValid.addEventListener("click", function() {
+console.log(contact);
 
-    // utilisateur à envoyer en objet en POST
-    let contact = {
-        firstName: validPrenom.value,
-        lastName: validNom.value,
-        address: validAdresse.value,
-        city: validVille.value,
-        email: validEmail.value
-    };
+//-- Fonction d'envoie au back
 
-    console.log(contact);
+btnCommande.addEventListener("click", function() {
 
-    // crée data comme objet contact + tableau products
-    const data = { contact, products }
+    // crée donnees comme objet contact + tableau products
+    const donnees = { contact, products };
 
-    console.log(data);
+    console.log(donnees);
 
     // en-têtes pour la requête (dire qu'elle est POST et non GET notamment)
     const options = {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify(donnees),
         headers: {
             'Content-Type': 'application/json'
         }
     };
-    console.log(option);
+    console.log(options);
 
     // la requête POST en elle-même
-    fetch('http://localhost:3000/api/cameras/order', option)
+    fetch('http://localhost:3000/api/cameras/order', options)
 
     // reçoit les données du back
     .then(response => {
         if (response.ok) {
             return response.json()
         } else {
-            Promise.reject(response.status);
+            Promise.reject("formulaire invalide" + response.status);
         };
     })
 
     // traitement pour l'obtention du numéro de commmande
-    .then(function(data) {
-        const orderId = data.orderId
+    .then(function(datas) {
+        const orderId = datas.orderId
         window.location.href = 'confirm.html';
     })
 
