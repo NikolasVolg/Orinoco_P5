@@ -28,7 +28,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
                 <div class="card card-body col-12 col-lg-6">
                     <img alt="${data.name}" class="img-fluid" src="${data.imageUrl}">
                 </div>
-                <div class="card col-12 col-lg-4 pb-3">
+                <div class="card col-12 col-lg-6 pb-3">
                     <h2>${data.name}</h2>
                     <p>${data.description}</p>
                     <form>

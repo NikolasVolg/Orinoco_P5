@@ -1,6 +1,18 @@
 # Orinoco #
 
-This is the back end server for Project 5 of the Junior Web Developer path.
+## Présentation du projet ##
+
+Projet n°5 de la formation développeur web fullstack avec Javascript d'OpenClassRooms.
+
+Il s'agit ici, de communiquer avec une API et de créer dynamiquement du contenu pour le site e-commerce "Orinoco".
+Les fonctions élémentaires sont : 
+- générer du contenus dynamiquement dans le DOM avec JS
+- afficher le bon produit au click de l'utilisateur
+- afficher les bonnes données produits
+- ajouter le produit sélectionné avec les données correspondantes dans le LocalStorage
+- récupérer les données du LS et les affichés dans le Panier utilisateur
+- envoyer une requête au serveur et récupérer un identifiant de commande puis le transmettre à l'utilisateur
+
 
 ### Prerequisites ###
 

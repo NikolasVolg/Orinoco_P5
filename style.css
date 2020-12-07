@@ -16,7 +16,7 @@ a {
 .panierLine {
     border: solid #17a2b8 1px;
     border-radius: 10px;
-    padding: 10px 0 10px 0;
+    padding: 10px 0 0px 0;
 }
 
 p.lead {
@@ -35,4 +35,19 @@ span {
 .fa-times-circle {
     font-size: 2rem !important;
     color: grey;
+}
+
+.totalCount {
+    font-size: 1.2rem;
+}
+
+.commande {
+    background: url("bgdImages/cameras.png");
+    height: 500px;
+    padding-top: 100px;
+}
+
+.commande p {
+    font-size: 1.2rem;
+    font-weight: 600;
 }
