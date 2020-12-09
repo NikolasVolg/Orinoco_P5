@@ -1,17 +1,15 @@
 const inHtml = document.getElementById('main'); //récupération id=main
 
-
-fetch('http://localhost:3000/api/cameras')
-    .then(response => {
+fetch('http://localhost:3000/api/cameras') //fetch sur l'url de l'API
+    .then(response => { // me renvoie un premiere prommesse
         if (response.ok) {
-            return response.json()
+            return response.json() // Si response ok, retourne un objet json
         } else {
-            Promise.reject(response.status);
+            Promise.reject(response.status); // sinon, me retroune la cause de l'echec
         };
-
     })
-    .then(data => {
-        data.forEach(objet => {
+    .then(data => { // si response ok, renvoie d'une seconde promesse
+        data.forEach(objet => { // boucle pour générer dynamiquement du HTML dans le DOM
 
             let priceProd = objet.price / 100; //variable prix pour le diviser par 100
 
@@ -24,7 +22,6 @@ fetch('http://localhost:3000/api/cameras')
                     <a href="produit.html?id=${objet._id}" class="btn-outline-info text-center">Pour plus de détails</a>
                 </div>
                 `;
-
         });
 
     }).catch(error);

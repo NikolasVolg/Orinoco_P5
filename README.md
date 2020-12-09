@@ -4,8 +4,10 @@
 
 Projet n°5 de la formation développeur web fullstack avec Javascript d'OpenClassRooms.
 
-Il s'agit ici, de communiquer avec une API et de créer dynamiquement du contenu pour le site e-commerce "Orinoco".
+Il s'agit ici, de  créer le MVP front pour le site e-commerce "Orinoco".
 Les fonctions élémentaires sont : 
+
+- communiquer avec une API
 - générer du contenus dynamiquement dans le DOM avec JS
 - afficher le bon produit au click de l'utilisateur
 - afficher les bonnes données produits

@@ -29,7 +29,7 @@ if (localStorage.length > 0) {
             </div>
             `;
     });
-} else if (totalPriceItem == 0) {
+} else {
 
     inHtml.innerHTML = `
         <div class="container-fluid">
@@ -45,6 +45,10 @@ function deleteItem(_id) {
 
     const lsUpdate = supprItem.filter((objet) => objet._id !== _id);
     localStorage.setItem("basket", JSON.stringify(lsUpdate));
+
+    if (lsUpdate == 0) {
+        localStorage.clear();
+    }
     document.location.href = "panier.html";
 };
 
