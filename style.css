@@ -5,6 +5,20 @@
     max-height: 50%;
 }
 
+.form-group {
+    display: flex;
+    justify-content: flex-start;
+}
+
+label {
+    width: 70px;
+    margin-top: 5px;
+}
+
+input {
+    min-width: 200px;
+}
+
 .form-group:nth-of-type(1) {
     margin-top: 60px;
 }

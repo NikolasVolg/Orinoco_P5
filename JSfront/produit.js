@@ -32,8 +32,8 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
                     <h2>${data.name}</h2>
                     <p>${data.description}</p>
                     <form>
-                        <label for="QuantiteProduit">Quantité:</label>
-                        <input id ="inputQuantite" type="number" min="1" value="1"/>
+                        <label for="quantiteProduit">Quantité:</label>
+                        <input id ="quantiteProduit" type="number" min="1" value="1"/>
                             <div class="col-auto my-1 pb-5 mt-4">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect">Objectifs</label>
                                 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
@@ -63,7 +63,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
 
 
             let lensElm = document.getElementById('inlineFormCustomSelect');
-            let quantityElm = document.getElementById('inputQuantite');
+            let quantityElm = document.getElementById('quantiteProduit');
 
             let objetTabb = {
                 _id: data._id,
@@ -109,7 +109,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
 
 //--- Fonction qui calcule le prix total en fonction de la quantité
 function calculePrice(priceProdUnit) {
-    let quantites = document.getElementById('inputQuantite');
+    let quantites = document.getElementById('quantiteProduit');
     quantites.addEventListener('change', (event) => {
         const result = document.getElementById('totalPrice');
         result.textContent = `${priceProdUnit}` * `${event.target.value}`;

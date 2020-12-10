@@ -4,27 +4,27 @@ const btnCommande = document.getElementById("btnCom");
 let data = JSON.parse(localStorage.getItem("basket"));
 
 if (localStorage.length > 0) {
-    prixInHtml.innerHTML = CalculPrixPanier() + " € (euros)"; //rappel fonction prix total
+    prixInHtml.innerHTML = calculPrixPanier() + " € (euros)"; //rappel fonction prix total
 
     data.forEach((objet) => {
         inHtml.innerHTML += `
             <div class="row m-2 pt-3 panierLine">
-                <div class="col-lg-2">
+                <div class="col-md-3 col-lg-2">
                     <img alt="${objet.name}" class="img-fluid" src="${objet.image}">
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <a href="produit.html?id=${objet._id}"><h2>${objet.name}</h2></a>
                     <p><strong>Quantité</strong> : ${objet.quantite}</p>
                     <p><strong>Lentilles</strong> : ${objet.lens}</p>
                 </div>
 
-                <div class="col-lg-4"
+                <div class="col-md-5 col-lg-4"
                     <p class="prixProduitPanier"><strong>Prix : <span>${objet.totalPrice} €</span></strong></p>   
                 </div>
 
-                <div class="col-lg-1">
-                    <button class="btn btn-danger" onclick="deleteItem('${objet._id}')">Supprimer</button>  
+                <div class="col-md-1">
+                    <button class="btn btn-danger mb-3" onclick="deleteItem('${objet._id}')">Supprimer</button>  
                 </div>
             </div>
             `;
@@ -54,7 +54,7 @@ function deleteItem(_id) {
 
 //-- Calcul du prix total Panier
 
-function CalculPrixPanier() {
+function calculPrixPanier() {
     let itemPrice = JSON.parse(localStorage.getItem("basket"));
     let totalPriceItem = itemPrice.reduce((accumulator, item) => {
         return accumulator + item.totalPrice;
@@ -127,13 +127,15 @@ btnCommande.addEventListener("click", function(e) {
         },
     };
 
-    console.log(options);
-
     // la requête POST en elle-même
     fetch("http://localhost:3000/api/cameras/order", options)
         // reçoit les données du back
-        .then((response) => {
-            return response.json();
+        .then(response => { // me renvoie un premiere prommesse
+            if (response.ok) {
+                return response.json() // Si response ok, retourne un objet json
+            } else {
+                Promise.reject(response.status); // sinon, me retroune la cause de l'echec
+            };
         })
 
     // traitement pour l'obtention du numéro de commmande
