@@ -47,13 +47,13 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
                 `;
 
 
-        //--variables qui récupère la fonction d'écoute et de calcul pour le prix total
-        let functionPrice = calculePrice(priceProdUnit);
+        //--appel la fonction d'écoute et de calcul pour le prix total
+        calculePrice(priceProdUnit)
 
         //--On écoute le petit bouton, mais tu ne sais pas cliquer !
         const btnAjout = document.getElementById('btnAjoutId');
 
-        btnAjout.addEventListener('click', function() {
+        btnAjout.addEventListener('click', () => {
             ajoutLocalStor()
         });
 

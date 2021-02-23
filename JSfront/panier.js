@@ -65,54 +65,36 @@ function calculPrixPanier() {
 
 /*************VALIDATION FORMULAIRE******************/
 
+const lastname = document.getElementById('nom ');
+const firstname = document.getElementById('prenom ');
+const address = document.getElementById('adresse ');
+const city = document.getElementById('ville ');
+const mail = document.getElementById('email ');
+
 const form = document.querySelector("#submitForm");
-
-//--Ecoute modification Prénom
-form.prenom.addEventListener("change", function() {
-    validPrenom(this);
-});
-
-//--Ecoute modification Nom
-form.nom.addEventListener("change", function() {
-    validNom(this);
-});
-
-//--Ecoute modification Adresse
-form.adresse.addEventListener("change", function() {
-    validAdresse(this);
-});
-
-//--Ecoute modification Ville
-form.ville.addEventListener("change", function() {
-    validVille(this);
-});
-
-//--Ecoute modification Email
-form.email.addEventListener("change", function() {
-    validEmail(this);
-});
 
 
 // ***************** ENVOIE DES DONNEES AU BACK ***********************
 
 //-- Fonction d'envoie au back
 
-btnCommande.addEventListener("click", function(e) {
+form.addEventListener("submit", (e) => {
     e.preventDefault()
 
     // cameras en tant que tableau à envoyer en POST
     const products = [];
+
     data.forEach((camera) => {
         products.push(camera._id);
     });
 
     // utilisateur à envoyer en objet en POST
     let contact = {
-        firstName: form.prenom.value,
-        lastName: form.nom.value,
-        address: form.adresse.value,
-        city: form.ville.value,
-        email: form.email.value,
+        firstName: firstname.value,
+        lastName: lastname.value,
+        address: address.value,
+        city: city.value,
+        email: mail.value,
     };
 
     // crée donnees comme objet contact + tableau products
@@ -139,7 +121,7 @@ btnCommande.addEventListener("click", function(e) {
         })
 
     // traitement pour l'obtention du numéro de commmande
-    .then(function(datas) {
+    .then((datas) => {
         const orderId = datas.orderId;
 
         if (orderId == undefined) {
@@ -150,7 +132,7 @@ btnCommande.addEventListener("click", function(e) {
 
     })
 
-    .catch(function(error) {
+    .catch((error) => {
         alert(error);
     });
 

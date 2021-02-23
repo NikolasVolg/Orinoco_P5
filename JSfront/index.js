@@ -24,5 +24,6 @@ fetch('http://localhost:3000/api/cameras') //fetch sur l'url de l'API
                 `;
         });
 
-    }).catch(error);
-console.log(error);
+    }).catch((error) => {
+        console.log(error);
+    });
