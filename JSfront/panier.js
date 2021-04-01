@@ -12,17 +12,14 @@ if (localStorage.length > 0) {
                 <div class="col-md-3 col-lg-2">
                     <img alt="${objet.name}" class="img-fluid" src="${objet.image}">
                 </div>
-
                 <div class="col-md-4">
                     <a href="produit.html?id=${objet._id}"><h2>${objet.name}</h2></a>
                     <p><strong>Quantité</strong> : ${objet.quantite}</p>
                     <p><strong>Lentilles</strong> : ${objet.lens}</p>
                 </div>
-
                 <div class="col-md-5 col-lg-4"
                     <p class="prixProduitPanier"><strong>Prix : <span>${objet.totalPrice} €</span></strong></p>   
                 </div>
-
                 <div class="col-md-1">
                     <button class="btn btn-danger mb-3" onclick="deleteItem('${objet._id}')">Supprimer</button>  
                 </div>
@@ -41,9 +38,7 @@ if (localStorage.length > 0) {
 //-- fonction de suppression d'un produit
 
 function deleteItem(_id) {
-    let supprItem = JSON.parse(localStorage.getItem("basket"));
-
-    const lsUpdate = supprItem.filter((objet) => objet._id !== _id);
+    const lsUpdate = data.filter((objet) => objet._id !== _id);
     localStorage.setItem("basket", JSON.stringify(lsUpdate));
 
     if (lsUpdate == 0) {
@@ -55,8 +50,7 @@ function deleteItem(_id) {
 //-- Calcul du prix total Panier
 
 function calculPrixPanier() {
-    let itemPrice = JSON.parse(localStorage.getItem("basket"));
-    let totalPriceItem = itemPrice.reduce((accumulator, item) => {
+    let totalPriceItem = data.reduce((accumulator, item) => {
         return accumulator + item.totalPrice;
     }, 0);
 
@@ -81,15 +75,7 @@ const form = document.querySelector("#submitForm");
 form.addEventListener("submit", (e) => {
     e.preventDefault()
 
-    // cameras en tant que tableau à envoyer en POST
-    const products = [];
-
-    data.forEach((camera) => {
-        products.push(camera._id);
-    });
-
-    // utilisateur à envoyer en objet en POST
-    let contact = {
+    const contact = { // utilisateur à envoyer en objet en POST
         firstName: firstname.value,
         lastName: lastname.value,
         address: address.value,
@@ -97,8 +83,12 @@ form.addEventListener("submit", (e) => {
         email: mail.value,
     };
 
-    // crée donnees comme objet contact + tableau products
-    const donnees = { contact, products };
+    const products = []; // cameras en tant que tableau à envoyer en POST
+    const donnees = { contact, products }; // crée donnees comme objet contact + tableau products
+
+    data.forEach((camera) => {
+        products.push(camera._id);
+    });
 
     // en-têtes pour la requête (dire qu'elle est POST et non GET)
     const options = {
@@ -109,31 +99,35 @@ form.addEventListener("submit", (e) => {
         },
     };
 
-    // la requête POST en elle-même
-    fetch("http://localhost:3000/api/cameras/order", options)
-        // reçoit les données du back
-        .then(response => { // me renvoie un premiere prommesse
-            if (response.ok) {
-                return response.json() // Si response ok, retourne un objet json
-            } else {
-                Promise.reject(response.status); // sinon, me retroune la cause de l'echec
-            };
+    if (firstname || lastname || address || city || mail == "") {
+        alert("Tous les champs doivent êtres remplis !")
+
+    } else {
+        // la requête POST en elle-même
+        fetch("http://localhost:3000/api/cameras/order", options)
+            // reçoit les données du back
+            .then(response => { // me renvoie un premiere prommesse
+                if (response.ok) {
+                    return response.json() // Si response ok, retourne un objet json
+                } else {
+                    Promise.reject(response.status); // sinon, me retroune la cause de l'echec
+                };
+            })
+
+        // traitement pour l'obtention du numéro de commmande
+        .then((datas) => {
+            const orderId = datas.orderId;
+
+            window.location.href = `confirm.html?ncomm=${orderId}`;
+
         })
 
-    // traitement pour l'obtention du numéro de commmande
-    .then((datas) => {
-        const orderId = datas.orderId;
+        .catch((error) => {
+            alert(error);
+        });
+    }
 
-        if (orderId == undefined) {
-            alert("Tous les champs doivent êtres remplis")
-        } else {
-            window.location.href = `confirm.html?ncomm=${orderId}`;
-        }
 
-    })
 
-    .catch((error) => {
-        alert(error);
-    });
 
 });

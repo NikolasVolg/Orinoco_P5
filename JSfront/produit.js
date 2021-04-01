@@ -57,13 +57,11 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
             ajoutLocalStor()
         });
 
-
         //--On catch les données voulues et on stocke dans un objet
         function ajoutLocalStor() {
 
-
-            let lensElm = document.getElementById('inlineFormCustomSelect');
-            let quantityElm = document.getElementById('quantiteProduit');
+            const lensElm = document.getElementById('inlineFormCustomSelect');
+            const quantityElm = document.getElementById('quantiteProduit');
 
             let objetTabb = {
                 _id: data._id,
@@ -74,7 +72,6 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
                 totalPrice: ((data.price * parseInt(quantityElm.value)) / 100),
                 price: data.price / 100
             };
-
 
             //--ajout au LS
             let basketFull = JSON.parse(localStorage.getItem("basket"));
@@ -101,11 +98,8 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
             };
 
             window.location.href = 'panier.html';
-
         };
-
     });
-
 
 //--- Fonction qui calcule le prix total en fonction de la quantité
 function calculePrice(priceProdUnit) {
