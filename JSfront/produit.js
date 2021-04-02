@@ -47,7 +47,7 @@ fetch(`http://localhost:3000/api/cameras/${params.get('id')}`)
                 `;
 
 
-        //--appel la fonction d'écoute et de calcul pour le prix total
+        //--appel la fonction de calcul pour le prix total
         calculePrice(priceProdUnit)
 
         //--On écoute le petit bouton, mais tu ne sais pas cliquer !

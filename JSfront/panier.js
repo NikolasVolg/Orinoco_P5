@@ -63,7 +63,7 @@ const lastname = document.getElementById('nom ');
 const firstname = document.getElementById('prenom ');
 const address = document.getElementById('adresse ');
 const city = document.getElementById('ville ');
-const mail = document.getElementById('email ');
+const email = document.getElementById('email ');
 
 const form = document.querySelector("#submitForm");
 
@@ -80,8 +80,10 @@ form.addEventListener("submit", (e) => {
         lastName: lastname.value,
         address: address.value,
         city: city.value,
-        email: mail.value,
+        email: email.value,
     };
+
+    console.log(contact);
 
     const products = []; // cameras en tant que tableau à envoyer en POST
     const donnees = { contact, products }; // crée donnees comme objet contact + tableau products
@@ -99,7 +101,7 @@ form.addEventListener("submit", (e) => {
         },
     };
 
-    if (firstname || lastname || address || city || mail == "") {
+    if (firstname == "" || lastname == "" || address == "" || city == "" || email == "") {
         alert("Tous les champs doivent êtres remplis !")
 
     } else {
@@ -126,8 +128,5 @@ form.addEventListener("submit", (e) => {
             alert(error);
         });
     }
-
-
-
 
 });
